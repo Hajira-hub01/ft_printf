@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putdigits.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hajmoham <hajmoham@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/13 11:14:50 by hajmoham          #+#    #+#             */
+/*   Updated: 2024/08/13 11:15:00 by hajmoham         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 ssize_t	ft_putnbr(int num)
@@ -25,6 +37,7 @@ ssize_t	ft_putnbr(int num)
 	}
 	return (length);
 }
+
 ssize_t	ft_putunbr(unsigned int num)
 {
 	ssize_t	length;
@@ -32,7 +45,7 @@ ssize_t	ft_putunbr(unsigned int num)
 	length = 0;
 	if (num > 9)
 	{
-		length += ft_putnbr(num / 10);
+		length += ft_putunbr(num / 10);
 		length += ft_putchar('0' + num % 10);
 	}
 	else
@@ -57,13 +70,13 @@ ssize_t	ft_puthex(unsigned long long num, char format)
 		if (num >= 10)
 		{
 			if (format == 'X')
-				length += putchar(num - 10 + 'A');
+				length += ft_putchar(num - 10 + 'A');
 			else if (format == 'x')
-				length += putchar(num - 10 + 'a');
+				length += ft_putchar(num - 10 + 'a');
 		}
 		else
 		{
-			length += putchar(num + '0');
+			length += ft_putchar(num + '0');
 		}
 	}
 	return (length);
@@ -71,7 +84,7 @@ ssize_t	ft_puthex(unsigned long long num, char format)
 
 ssize_t	ft_putptr(void *ptr)
 {
-	ssize_t length;
+	ssize_t	length;
 
 	length = 0;
 	length += ft_putstr("0x");

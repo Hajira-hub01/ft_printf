@@ -1,45 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hajmoham <hajmoham@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/13 11:12:27 by hajmoham          #+#    #+#             */
+/*   Updated: 2024/08/13 11:21:32 by hajmoham         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-ssize_t handle(va_list args, char format) 
+ssize_t	handle(va_list args, char format)
 {
-    if (format == 'c') 
-        return put_char(va_arg(args, int));
-    else if (format == 's') 
-        return put_str(va_arg(args, char *));
-    else if (format == 'p') 
-        return put_ptr(va_arg(args, void *));
-    else if (format == 'd' || format == 'i') 
-        return put_nbr(va_arg(args, int));
-    else if (format == 'u') 
-        return put_nbr(va_arg(args, unsigned int));
-    else if (format == 'x' || format == 'X') 
-        return put_hex(va_arg(args, unsigned int), format);
-    else if (format == '%') 
-        return put_char('%');
-    return 0;
+	if (format == 'c')
+		return (ft_putchar(va_arg(args, int)));
+	else if (format == 's')
+		return (ft_putstr(va_arg(args, char *)));
+	else if (format == 'p')
+		return (ft_putptr(va_arg(args, void *)));
+	else if (format == 'd' || format == 'i')
+		return (ft_putnbr(va_arg(args, int)));
+	else if (format == 'u')
+		return (ft_putunbr(va_arg(args, unsigned int)));
+	else if (format == 'x' || format == 'X')
+		return (ft_puthex(va_arg(args, unsigned int), format));
+	else if (format == '%')
+		return (ft_putchar('%'));
+	return (0);
 }
 
-ssize_t ft_printf(const char *format, ...) 
+ssize_t	ft_printf(const char *format, ...)
 {
-    va_list args;
-    ssize_t length = 0;
+	va_list	args;
+	ssize_t	length;
 
-    va_start(args, format);
-    while (*format) 
-    {
-        if (*format == '%') 
-        {
-            format++;
-            ssize_t result = handle(args, *format);
-            if (result == -1) return -1;
-            length += result;
-        } else 
-        {
-            if (put_char(*format) == -1) return -1;
-            length++;
-        }
-        format++;
-    }
-    va_end(args);
-    return length;
+	length = 0;
+	va_start(args, format);
+	while (*format)
+	{
+		if (*format == '%')
+		{
+			format++;
+			length += handle(args, *format);
+		}
+		else
+		{
+			length += ft_putchar(*format);
+		}
+		format++;
+	}
+	va_end(args);
+	return (length);
 }
+
+// int	main(void)
+// {
+// 	char *name = "Hajira";
+// 	int age = 23;
+// 	char *study = "42AbuDhabi";
+// 	int my = ft_printf("MY\nName: %s\nAge: %d\nStudy: %s\n", name, age, study);
+// 	int ori = printf("MY\nName: %s\nAge: %d\nStudy: %s\n", name, age, study);
+// }
